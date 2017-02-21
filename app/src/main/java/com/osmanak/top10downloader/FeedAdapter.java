@@ -2,6 +2,7 @@ package com.osmanak.top10downloader;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,18 +36,48 @@ public class FeedAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = layoutInflater.inflate(layoutResource, parent, false);
-        TextView tvName = (TextView) view.findViewById(R.id.tvName);
-        TextView tvArtist = (TextView) view.findViewById(R.id.tvArtist);
-        TextView tvSummary = (TextView) view.findViewById(R.id.tvSummary);
+
+        // Creates ViewHolder Object
+        ViewHolder viewHolder;
+
+        // Reuses view if it is on the screen. Creates new one if not.
+        if(convertView == null) {
+            Log.d(TAG, "getView:  called with null convertView");
+            convertView = layoutInflater.inflate(layoutResource, parent, false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        } else {
+            Log.d(TAG, "getView: provided a convertView");
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        /* Instead of calling findViewById everytime a view loads, we use a ViewHolder class that stores the references for us.
+        TextView tvName = (TextView) convertView.findViewById(tvName);
+        TextView tvArtist = (TextView) convertView.findViewById(R.id.tvArtist);
+        TextView tvSummary = (TextView) convertView.findViewById(R.id.tvSummary);
+        */
 
         FeedEntry currentApp = applications.get(position);
 
-        tvName.setText(currentApp.getName());
-        tvArtist.setText(currentApp.getArtists());
-        tvSummary.setText(currentApp.getSummary());
 
-        return view;
+        viewHolder.tvName.setText(currentApp.getName());
+        viewHolder.tvArtist.setText(currentApp.getArtist());
+        viewHolder.tvSummary.setText(currentApp.getSummary());
+
+        return convertView;
+    }
+
+    //Holds View references for later use.
+    private class ViewHolder {
+        final TextView tvName;
+        final TextView tvArtist;
+        final TextView tvSummary;
+
+        ViewHolder(View v){
+            this.tvName = (TextView)v.findViewById(R.id.tvName);
+            this.tvArtist = (TextView)v.findViewById(R.id.tvArtist);
+            this.tvSummary = (TextView)v.findViewById(R.id.tvSummary);
+        }
     }
 }
 

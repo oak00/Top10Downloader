@@ -7,7 +7,7 @@ package com.osmanak.top10downloader;
 public class FeedEntry {
 
     private String name;
-    private String artists;
+    private String artist;
     private String releaseDate;
     private String summary;
     private String imageURL;
@@ -20,12 +20,12 @@ public class FeedEntry {
         this.name = name;
     }
 
-    public String getArtists() {
-        return artists;
+    public String getArtist() {
+        return artist;
     }
 
-    public void setArtists(String artists) {
-        this.artists = artists;
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
     public String getReleaseDate() {
